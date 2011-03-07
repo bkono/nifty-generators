@@ -1,11 +1,11 @@
 Gem::Specification.new do |s|
-  s.name        = "nifty-generators"
-  s.version     = "0.4.5"
-  s.author      = "Ryan Bates"
-  s.email       = "ryan@railscasts.com"
-  s.homepage    = "http://github.com/ryanb/nifty-generators"
-  s.summary     = "A collection of useful Rails generator scripts."
-  s.description = "A collection of useful Rails generator scripts for scaffolding, layout files, authentication, and more."
+  s.name        = "kono-nifty-generators"
+  s.version     = "0.0.4"
+  s.author      = "Bryan Konowitz"
+  s.email       = "bryan@solvedbycode.com"
+  s.homepage    = "http://github.com/bkonowitz/nifty-generators"
+  s.summary     = "A fork of the amazing Nifty Generators by Ryan Bates."
+  s.description = "This is a fork of the amazing Nifty Generators by Ryan Bates. Included in this version are various updates to provide a smoother workflow on core, code generation-ready features. Additions such as Mongoid support, and ajax scaffolding generators are just some of the changes being baked inside."
 
   s.files        = Dir["{lib,test,features,rails_generators}/**/*", "[A-Z]*"]
   s.require_path = "lib"
