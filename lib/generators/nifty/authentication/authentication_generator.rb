@@ -52,9 +52,9 @@ module Nifty
 
 			def create_routes
 				route "resources #{user_plural_name.to_sym.inspect}"
-				route "resources #{session_plural_name.to_sym.inspect}"
 				route "get 'login' => '#{session_plural_name}#new', :as => :login"
-				route "match 'logout' => '#{session_plural_name}#destroy', :as => :logout"
+				route "post 'login' => '#{session_plural_name}#create', :as => :login"
+				route "get 'logout' => '#{session_plural_name}#destroy', :as => :logout"
 				route "get 'signup' => '#{user_plural_name}#new', :as => :signup"
 				route "match '#{user_singular_name}/edit' => '#{user_plural_name}#edit', :as => :edit_current_#{user_singular_name}"
 			end

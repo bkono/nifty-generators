@@ -10,7 +10,6 @@ class <%= user_class_name %>
 	field :username
 	field :email
 	field :password_hash
-	field :password_salt
 
   attr_accessor :password
   before_save :prepare_password
@@ -26,19 +25,14 @@ class <%= user_class_name %>
   # login can be either username or email address
   def self.authenticate(login, pass)
     <%= user_singular_name %> = first(:conditions => {:username => login}) || first(:conditions => {:email => login})
-    return <%= user_singular_name %> if <%= user_singular_name %> && <%= user_singular_name %>.password_hash == <%= user_singular_name %>.encrypt_password(pass)
-  end
-
-  def encrypt_password(pass)
-    BCrypt::Engine.hash_secret(pass, password_salt)
+    return <%= user_singular_name %> if <%= user_singular_name %> && BCrypt::Password.new(<%= user_singular_name %>.password_hash) == pass
   end
 
   private
 
   def prepare_password
     unless password.blank?
-      self.password_salt = BCrypt::Engine.generate_salt
-      self.password_hash = encrypt_password(password)
+			self.password_hash = BCrypt::Password.create(password)
     end
   end
 <%- end -%>
