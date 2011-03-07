@@ -2,6 +2,12 @@
 
 A collection of useful Rails generator scripts for scaffolding, layout files, authentication, and more.
 
+::: This fork is intended to introduce additional features in each of the main branches. Currently, the following updates have been made:
+	= Nifty:Authentication 
+		- Mongoid has been implemented as an option for Nifty:Authentication
+  	- Routes were cleaned up to remove 'resources :sessions' and just use proper Get/Post login, logout 
+		- For the Mongoid User model, BCrypt::Password is being properly utilized, and password_salt is removed.
+
 
 == Setup
 
