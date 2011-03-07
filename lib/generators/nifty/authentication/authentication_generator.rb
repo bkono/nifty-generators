@@ -16,13 +16,16 @@ module Nifty
       class_option :haml, :desc => 'Generate HAML views instead of ERB.', :type => :boolean
       class_option :authlogic, :desc => 'Use Authlogic for authentication.', :type => :boolean
 
+      class_option :mongoid, :desc => 'Use Mongoid as the ORM.', :group => 'ORM', :type => :boolean
+
       def add_gems
         add_gem "bcrypt-ruby", :require => "bcrypt"
         add_gem "mocha", :group => :test
       end
 
       def create_model_files
-        template 'user.rb', "app/models/#{user_singular_name}.rb"
+        template 'user.rb', "app/models/#{user_singular_name}.rb" if orm == :active_record
+				template 'user_mongoid.rb', "app/models/#{user_singular_name}.rb" if orm == :mongoid
         template 'authlogic_session.rb', "app/models/#{user_singular_name}_session.rb" if options.authlogic?
       end
 
@@ -50,14 +53,14 @@ module Nifty
       def create_routes
         route "resources #{user_plural_name.to_sym.inspect}"
         route "resources #{session_plural_name.to_sym.inspect}"
-        route "match 'login' => '#{session_plural_name}#new', :as => :login"
+        route "get 'login' => '#{session_plural_name}#new', :as => :login"
         route "match 'logout' => '#{session_plural_name}#destroy', :as => :logout"
-        route "match 'signup' => '#{user_plural_name}#new', :as => :signup"
+        route "get 'signup' => '#{user_plural_name}#new', :as => :signup"
         route "match '#{user_singular_name}/edit' => '#{user_plural_name}#edit', :as => :edit_current_#{user_singular_name}"
       end
 
       def create_migration
-        migration_template 'migration.rb', "db/migrate/create_#{user_plural_name}.rb"
+        migration_template 'migration.rb', "db/migrate/create_#{user_plural_name}.rb" if orm == :active_record
       end
 
       def load_and_include_authentication
@@ -135,6 +138,17 @@ module Nifty
           return @test_framework = File.exist?(destination_path('spec')) ? :rspec : :testunit
         end
       end
+
+			def orm
+				return @orm if defined?(@orm)
+				# written with intent for supporting more ORMs
+				if options.mongoid?
+					return @orm = :mongoid
+				else
+					return @orm = :active_record
+				end
+			end
+
 
       def destination_path(path)
         File.join(destination_root, path)

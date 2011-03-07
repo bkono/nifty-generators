@@ -116,6 +116,7 @@ protected
     opt.on("--shoulda", "Use Shoulda for test files.") { options[:test_framework] = :shoulda }
     opt.on("--haml", "Generate HAML views instead of ERB.") { |v| options[:haml] = true }
     opt.on("--authlogic", "Use Authlogic for authentication.") { |v| options[:authlogic] = true }
+    opt.on("--mongoid", "Use Mongoid instead of ActiveRecord") { |v| options[:mongoid] = true }
   end
 
   def banner
